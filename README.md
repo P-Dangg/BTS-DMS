@@ -32,6 +32,7 @@ Title|MM/dd/yyyy|City|Times Played|Unit Song (yes/no)|Release Year
 ## Validation
 - ✅ Empty inputs handled
 - ✅ Date format: MM/dd/yyyy
+- ✅ Performance year must be 2026 (Ariang Tour)
 - ✅ Release year: 2013-2026
 - ✅ Play count: non-negative
 - ✅ Unit song: yes/no

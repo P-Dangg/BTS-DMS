@@ -3,6 +3,7 @@ Phuong Dang - CEN3024C-31032
 # BTS Surprise Song Tracker MDS
 
 A Java Data Management System for tracking BTS surprise songs on the ARIRANG World Tour. Users can log performances, update play counts, and calculate the Borahae rarity score.
+
 Updated: connect to the database SQLite
 
 ## Features

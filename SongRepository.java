@@ -10,6 +10,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages the in-memory list of songs and keeps it synchronized with a SQLite database
+ */
 public class SongRepository {
 
     private static final String LEGACY_DATA_FILE = "songs.txt";
@@ -50,6 +53,9 @@ public class SongRepository {
         }
     }
 
+    /**
+     * @return the absolute file path to the SQLite database
+     */
     public String getDatabasePath() {
         return DB_PATH;
     }
@@ -300,6 +306,12 @@ public class SongRepository {
     }
 
     //CRUD
+    /**
+     * Adds a new song to the database and memory list if it is not a duplicate
+     *
+     * @param song the song to add
+     * @return true if successfully added, false if duplicate or invalid
+     */
     public boolean addSong(Song song) {
         if (isDuplicate(song.getSongTitle(), song.getPerformedDate(), song.getCity(), -1)) {
             return false;
@@ -308,20 +320,34 @@ public class SongRepository {
         songs.add(song);
         return true;
     }
-    //Returns all songs in the repository
+    /**
+     * @return list of all songs currently in memory
+     */
     public List<Song> getAll() { return songs; }
 
-    //Returns a song at the specified index
+    /**
+     * Retrieves a song at the specified list index
+     *
+     * @param index zero-based index
+     * @return the song at the index, or null if out of bounds
+     */
     public Song get(int index) {
         if (index >= 0 && index < songs.size()) {
             return songs.get(index);
         }
         return null;
     }
-    //Returns the total number of songs
+    /**
+     * @return total count of loaded songs
+     */
     public int size() { return songs.size(); }
 
-    //Deletes a song at the specified index
+    /**
+     * Removes a song from memory and the database by list index
+     *
+     * @param index zero-based index of song to remove
+     * @return the removed the song, or null if invalid index
+     */
     public Song delete(int index) {
         if (index >= 0 && index < songs.size()) {
             Song removed = songs.get(index);
@@ -332,8 +358,9 @@ public class SongRepository {
         return null;
     }
 
-    //Persists all in memory changes to the database
-    //Each song is updated by its row ID
+    /**
+     * Persists all in-memory changes to the database
+     */
     public void persistAfterUpdate() {
         for (Song s : songs) {
             if (s.getId() < 0) {
@@ -344,7 +371,15 @@ public class SongRepository {
         }
     }
 
-    //Duplicate check
+    /**
+     * Checks if a song entry with the same title, date, and city already exists.
+     *
+     * @param title        song title
+     * @param date         performance date
+     * @param city         city location
+     * @param excludeIndex list index to ignore (used during edits), or -1
+     * @return true if a duplicate entry exists, false otherwise
+     */
     public boolean isDuplicate(String title, String date, String city, int excludeIndex) {
         for (int i = 0; i < songs.size(); i++) {
             if (i == excludeIndex) continue;
@@ -358,7 +393,12 @@ public class SongRepository {
         return false;
     }
 
-    //Import from an external text file
+    /**
+     * Imports songs from a pipe-delimited text file into the database.
+     *
+     * @param path absolute or relative path to the text file
+     * @return an imported result object containing counts and error status
+     */
     public ImportResult importFromFile(String path) {
         if (path == null || path.isBlank()) {
             return new ImportResult(0, 0, "File path cannot be empty");
@@ -397,9 +437,19 @@ public class SongRepository {
         return new ImportResult(added, skipped, null);
     }
 
+    /**
+     * Holds the result of an import operation
+     */
     public static class ImportResult {
         public final int added, skipped;
         public final String errorMessage;
+        /**
+         * Constructs an ImportResult.
+         *
+         * @param added        the number of songs successfully added
+         * @param skipped      the number of songs skipped
+         * @param errorMessage any error message, or null if successful
+         */
         public ImportResult(int added, int skipped, String errorMessage) {
             this.added = added;
             this.skipped = skipped;

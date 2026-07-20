@@ -11,16 +11,29 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
+/**
+ * Handles user input parsing and validation to prevent runtime errors
+ */
 public class InputValidator {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     private final Scanner scanner;
 
+    /**
+     * Constructs an InputValidator attached to a Scanner
+     *
+     * @param scanner active Scanner object for console input
+     */
     public InputValidator(Scanner scanner) {
         this.scanner = scanner;
     }
 
-    // Non-empty string
+    /**
+     * Prompts for a non-empty string.
+     *
+     * @param prompt message displayed to the user
+     * @return validated non-empty string
+     */
     public String readNonEmptyString(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -30,7 +43,12 @@ public class InputValidator {
         }
     }
 
-    // Valid date - 2026 (Arirang tour year)
+    /**
+     * Checks if a string date matches MM/dd/yyyy format
+     *
+     * @param date string to validate
+     * @return true if valid date format, false otherwise
+     */
     public static boolean isValidDate(String date) {
         try {
             LocalDate.parse(date, DATE_FORMAT);
@@ -40,6 +58,12 @@ public class InputValidator {
         }
     }
 
+    /**
+     * Prompts for a valid performance date in the year 2026
+     *
+     * @param prompt message displayed to user
+     * @return validated date string (MM/dd/yyyy)
+     */
     public String readValidDate(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -62,7 +86,12 @@ public class InputValidator {
         }
     }
 
-    // Non-negative integer
+    /**
+     * Reads and validates a non-negative integer from the user
+     *
+     * @param prompt message to display to the user
+     * @return the non-negative integer entered by the user
+     */
     public int readNonNegativeInt(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -77,7 +106,12 @@ public class InputValidator {
         }
     }
 
-    // Yes/No
+    /**
+     * Prompts for yes/no input
+     *
+     * @param prompt message displayed to user
+     * @return true if yes, false if no
+     */
     public boolean readYesNo(String prompt) {
         while (true) {
             System.out.print(prompt + " (yes/no): ");
@@ -88,7 +122,12 @@ public class InputValidator {
         }
     }
 
-    // Valid year - must be between 2013 and 2026 (BTS debut to current)
+    /**
+     * Prompts for a song release year between 2013 and 2026
+     *
+     * @param prompt message displayed to user
+     * @return validated year between 2013 and 2026
+     */
     public int readValidYear(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -102,7 +141,13 @@ public class InputValidator {
         }
     }
 
-    // Valid index for list
+    /**
+     * Prompts for a 1-based list selection index
+     *
+     * @param prompt message displayed to user
+     * @param listSize current size of target list
+     * @return 0-based index, or -1 if canceled
+     */
     public int readValidIndex(String prompt, int listSize) {
         if (listSize <= 0) {
             System.out.println("❌ The list is currently empty.");
@@ -129,7 +174,12 @@ public class InputValidator {
         }
     }
 
-    // Read line
+    /**
+     * Reads a line of input from the user with a prompt
+     *
+     * @param prompt message to display to the user
+     * @return the trimmed input string
+     */
     public String readLine(String prompt) {
         System.out.print(prompt);
         return scanner.nextLine().trim();

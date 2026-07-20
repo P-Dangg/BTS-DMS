@@ -9,6 +9,12 @@ Higher score = older / rarer song that hasn't been played much = more special.
 
 import java.time.Year;
 
+/**
+ * Calculates the Borahae score based on release year and play count
+ * Formula: (Current Year - Release Year) + (15 - Times Played)
+ *
+ * @return the calculated score
+ */
 public class BorahaeCalculator {
     public static double calculate(Song song) {
         int currentYear = Year.now().getValue();
